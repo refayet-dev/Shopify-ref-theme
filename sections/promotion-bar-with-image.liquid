@@ -1,0 +1,256 @@
+<style>
+  #RE-{{ section.id }} {
+    background: {{ section.settings.background_color }};
+    padding-top: {{ section.settings.padding_top_bottom }}px;
+    padding-bottom: {{ section.settings.padding_top_bottom }}px;
+    padding-left: {{ section.settings.padding_left_right }}px;
+    padding-right: {{ section.settings.padding_left_right }}px;
+    border-radius: {{ section.settings.border_radius }}px;
+  }
+  #RE-{{ section.id }}
+  .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  #RE-{{ section.id }}
+  .promotion-bar-with-image__image {
+    width: 50%;
+  }
+  #RE-{{ section.id }}
+  .promotion-bar-with-image__image img {
+    width: 100%;
+    height: auto;
+  }
+  #RE-{{ section.id }}
+  .promotion-bar-with-image__content {
+    width: 50%;
+    padding: 0 20px;
+  }
+  {%- for block in section.blocks -%}
+    {%- if block.type == 'text' -%}
+      #RE-{{ section.id }}
+      .promotion-bar-with-image__head-text {
+        color: {{ block.settings.text_color }};
+        font-size: {{ block.settings.font_size }}px;
+        font-weight: 700;
+        margin-bottom: 10px;
+      }
+    {%- endif -%}
+    {%- if block.type == 'text_sub' -%}
+      #RE-{{ section.id }}
+      .promotion-bar-with-image__sub-text {
+        color: {{ block.settings.text_color }};
+        font-size: {{ block.settings.font_size }}px;
+        margin-bottom: 20px;
+      }
+    {%- endif -%}
+    {%- if block.type == 'url' -%}
+      #RE-{{ section.id }}
+      .promotion-bar-with-image__button {
+        background: {{ block.settings.background_color }};
+        color: {{ block.settings.text_color }};
+        padding: 10px 20px;
+        border-radius: 5px;
+        text-decoration: none;
+        display: inline-block;
+      }
+    {%- endif -%}
+  {%- endfor -%}
+</style>
+
+<div id="RE-{{ section.id }}" class="RE-{{ section.id }}">
+  <div class="container">
+    <div class="promotion-bar-with-image">
+      {%- for block in section.blocks -%}
+        {%- if block.type == 'image_picker' -%}
+          <div class="promotion-bar-with-image__image">
+            {% if block.settings.promotion_bar_image != blank %}
+              <img
+                src="{{ block.settings.promotion_bar_image }}"
+                loading="lazy"
+                alt="">
+            {% else %}
+              {{ 'product-1' | placeholder_svg_tag }}
+            {% endif %}
+          </div>
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+    <div class="promotion-bar-with-image__content">
+      {%- for block in section.blocks -%}
+        {% if block.type == 'text' %}
+          <h2 class="promotion-bar-with-image__head-text">{{ block.settings.promotion_bar_head_text }}</h2>
+        {% endif %}
+        {% if block.type == 'text_sub' %}
+          <p class="promotion-bar-with-image__sub-text">{{ block.settings.promotion_bar_sub_text }}</p>
+        {% endif %}
+        {% if block.type == 'url' %}
+          <a href="{{ block.settings.button_link }}" class="promotion-bar-with-image__button">Shop now</a>
+        {% endif %}
+      {%- endfor -%}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+  {
+    "name": "promotion-bar-with-image",
+    "max_blocks": 4,
+    "settings": [
+      {
+        "type": "range",
+        "id": "padding_top_bottom",
+        "label": "Padding Top/Bottom",
+        "default": 20,
+        "min": 0,
+        "max": 50,
+        "step": 1,
+        "unit": "px"
+      },
+      {
+        "type": "range",
+        "id": "padding_left_right",
+        "label": "Padding Left/Right",
+        "default": 20,
+        "min": 0,
+        "max": 50,
+        "step": 1,
+        "unit": "px"
+      },
+      {
+        "type": "color_background",
+        "id": "background_color",
+        "label": "Background color",
+        "default": "radial-gradient(30.52% 26.17% at 17.31% 49.92%, #666 0%, #000 100%), #E7F8FF",
+        "info": "Choose a background color for your promotion bar."
+      },
+      {
+        "type": "range",
+        "id": "border_radius",
+        "label": "Section Border Radius",
+        "default": 20,
+        "min": 0,
+        "max": 50,
+        "step": 1,
+        "unit": "px",
+        "info": "Set the border radius for the section."
+      }, {
+        "type": "color",
+        "id": "text_color",
+        "label": "Text Color",
+        "default": "#fff",
+        "info": "Choose a color for your text."
+      }
+    ],
+    "blocks": [
+      {
+        "type": "image_picker",
+        "name": "Image",
+        "settings": [
+          {
+            "type": "image_picker",
+            "id": "promotion_bar_image",
+            "label": "Image",
+            "info": "Give your promotion bar a visual boost by adding an image."
+          }
+        ]
+      }, {
+        "type": "text",
+        "name": "HeadText",
+        "settings": [
+          {
+            "type": "text",
+            "id": "promotion_bar_head_text",
+            "label": "Text",
+            "default": "Steigern Sie Ihre Fitness mit IronMaxx®",
+            "info": "Add a headline to your promotion bar."
+          }, {
+            "type": "color",
+            "id": "text_color",
+            "label": "Text Color",
+            "default": "#fff",
+            "info": "Choose a color for your text."
+          }, {
+            "type": "range",
+            "id": "font_size",
+            "label": "Font Size",
+            "default": 24,
+            "min": 12,
+            "max": 36,
+            "step": 1,
+            "unit": "px",
+            "info": "Set the font size for the text."
+          }
+        ]
+      }, {
+        "type": "text_sub",
+        "name": "SubHeadText",
+        "settings": [
+          {
+            "type": "text",
+            "id": "promotion_bar_sub_text",
+            "label": "Text",
+            "default": " Premium-Proteine und Supplements für Muskelaufbau, Ausdauer und Regeneration. Wissenschaftlich fundierte Formeln für echte Ergebnisse.",
+            "info": "Add a subheadline to your promotion bar."
+          }, {
+            "type": "range",
+            "id": "font_size",
+            "label": "Font Size",
+            "default": 24,
+            "min": 12,
+            "max": 36,
+            "step": 1,
+            "unit": "px",
+            "info": "Set the font size for the text."
+          }, {
+            "type": "color",
+            "id": "text_color",
+            "label": "Text Color",
+            "default": "#fff",
+            "info": "Choose a color for your text."
+          }
+        ]
+      }, {
+        "type": "url",
+        "name": "Button link",
+        "settings": [
+          {
+            "type": "url",
+            "id": "button_link",
+            "label": "Button link",
+            "info": "Add a link to the button."
+          }, {
+            "type": "range",
+            "id": "font_size",
+            "label": "Font Size",
+            "default": 24,
+            "min": 12,
+            "max": 36,
+            "step": 1,
+            "unit": "px",
+            "info": "Set the font size for the button."
+          }, {
+            "type": "color",
+            "id": "text_color",
+            "label": "Text Color",
+            "default": "#fff",
+            "info": "Choose a color for your text."
+          }, {
+            "type": "color",
+            "id": "background_color",
+            "label": "Background Color",
+            "default": "#000",
+            "info": "Choose a background color for your button."
+          }
+        ]
+      }
+    ],
+    "presets": [
+      {
+        "category": "Promotion bar",
+        "name": "Promotion bar with image"
+      }
+    ]
+  }
+{% endschema %}
